@@ -16,7 +16,7 @@ gulp.task('default', ['inject'], () => {
 
 gulp.task('inject', function () {
   var target = gulp.src('./index.html');
-  var sources = gulp.src(['./libs/*.js', './js/**/*.js'], {read: false});
+  var sources = gulp.src(['./libs/*.js', './src/**/*.js'], {read: false});
 	console.log('aaa');
   return target.pipe(inject(sources, {relative: false}))
     .pipe(gulp.dest('./'));

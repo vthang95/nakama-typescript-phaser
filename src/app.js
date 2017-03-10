@@ -8,7 +8,7 @@ var SPACESHIP_SIZE_WIDTH = 78;
 var SPACESHIP_SIZE_HEIGHT = 78;
 var Nakama = (function () {
     function Nakama() {
-        this.game = new Phaser.Game(GAME_WIDTH_MAX, GAME_HEIGHT_MAX, Phaser.AUTO, 'content', {
+        this.game = new Phaser.Game(GAME_WIDTH_MAX, GAME_HEIGHT_MAX, Phaser.CANVAS, 'content', {
             preload: this.preload,
             create: this.create,
             render: this.render,
@@ -27,18 +27,30 @@ var Nakama = (function () {
         this.game.load.image('background', 'Assets/Map1.png');
     };
     Nakama.prototype.create = function () {
-        var SPACESHIP_1_SPAWN_CORDINATE_X = 200;
-        var SPACESHIP_1_SPAWN_CORDINATE_Y = 200;
+        var SPACESHIP_1_SPAWN_CORDINATE_X = GAME_WIDTH_MAX / 2 - SPACESHIP_SIZE_WIDTH / 2;
+        var SPACESHIP_1_SPAWN_CORDINATE_Y = GAME_HEIGHT_MAX / 2 - SPACESHIP_SIZE_HEIGHT / 2;
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        this.keyboard = this.game.input.keyboard;
+        Nakama.keyboard = this.game.input.keyboard;
         this.game.add.sprite(0, 0, 'background');
-        this.player1 = this.game.add.sprite(SPACESHIP_1_SPAWN_CORDINATE_X, SPACESHIP_1_SPAWN_CORDINATE_Y, 'assets', 'Spaceship1-Player.png');
+        this.player1 = new Player(this.game, SPACESHIP_1_SPAWN_CORDINATE_X, SPACESHIP_1_SPAWN_CORDINATE_Y, 'Spaceship1-Player.png', {
+            up: Phaser.Keyboard.UP,
+            down: Phaser.Keyboard.DOWN,
+            left: Phaser.Keyboard.LEFT,
+            right: Phaser.Keyboard.RIGHT
+        });
+        this.player2 = new Player(this.game, SPACESHIP_1_SPAWN_CORDINATE_X, SPACESHIP_1_SPAWN_CORDINATE_Y, 'Spaceship2-Player.png', {
+            up: Phaser.Keyboard.W,
+            down: Phaser.Keyboard.S,
+            left: Phaser.Keyboard.A,
+            right: Phaser.Keyboard.D
+        });
     };
     Nakama.prototype.render = function () {
     };
     Nakama.prototype.update = function () {
-        if (this.keyboard.isDown(Phaser.Keyboard.UP)) {
-            this.player1.position.y -= 10;
+        var listPlayers = [this.player1, this.player2];
+        for (var i = 0; i < listPlayers.length; i++) {
+            listPlayers[i].update();
         }
     };
     return Nakama;
